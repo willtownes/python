@@ -1,0 +1,12 @@
+* sugarscape
+* program to convert lat/long CSV from DMS to decimal degrees.
+
+
+
+Prompt: Does your specimen have _______? (y/n)
+if input = y
+goto xxxx
+if input = n
+goto zzzzz
+else error("invalid input, try again")
+goto previous
