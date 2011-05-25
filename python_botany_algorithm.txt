@@ -10,4 +10,3 @@ if input = n
 goto zzzzz
 else error("invalid input, try again")
 goto previous
-extra line
