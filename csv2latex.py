@@ -2,8 +2,8 @@
 #By Will Townes
 import os
 path = os.environ['USERPROFILE']+'\\Desktop'
-ifile = 'data.csv'
-ofile = 'LaTeXdata.txt'
+ifile = '\\data.csv'
+ofile = '\\LaTeXdata.txt'
 f = open(path+ifile,'r').readlines()
 g = open(path+ofile,'w')
 for i in range(len(f)):
