@@ -2,9 +2,16 @@
 #By Will Townes, will.townes@gmail.com
 #July 2011
 import os, csv
-path = os.environ['USERPROFILE']+'\\Desktop'
-ifile = '\\data.csv'
-ofile = '\\LaTeXdata.txt'
+#Windows version
+#path = os.environ['USERPROFILE']+'\\Desktop'
+#ifile = '\\data.csv'
+#ofile = '\\LaTeXdata.txt'
+
+#Mac version
+path = os.environ['HOME']+'/desktop'
+ifile = '/data.csv'
+ofile = '/LaTeXdata.txt'
+
 f = csv.DictReader(open(path+ifile,'rb'))
 ofile2 = open(path+ofile,'wb')
 csv.register_dialect('latex',delimiter='&',quotechar='"') #define LaTeX dialect
