@@ -3,7 +3,7 @@
 #July 2011
 import os, csv
 
-if os.name.lower() == 'windows':
+if os.name.lower() == 'nt':
     #Windows version
     path = os.environ['USERPROFILE']+'\\Desktop'
     ifile = '\\data.csv'
