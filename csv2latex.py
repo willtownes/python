@@ -2,15 +2,19 @@
 #By Will Townes, will.townes@gmail.com
 #July 2011
 import os, csv
-#Windows version
-#path = os.environ['USERPROFILE']+'\\Desktop'
-#ifile = '\\data.csv'
-#ofile = '\\LaTeXdata.txt'
 
-#Mac version
-path = os.environ['HOME']+'/desktop'
-ifile = '/data.csv'
-ofile = '/LaTeXdata.txt'
+if os.name.lower() == 'windows':
+    #Windows version
+    path = os.environ['USERPROFILE']+'\\Desktop'
+    ifile = '\\data.csv'
+    ofile = '\\LaTeXdata.txt'
+    newline = '\n'
+else:
+    #Mac or Linux version
+    path = os.environ['HOME']+'/desktop'
+    ifile = '/data.csv'
+    ofile = '/LaTeXdata.txt'
+    newline = '\r'
 
 f = csv.DictReader(open(path+ifile,'rb'))
 ofile2 = open(path+ofile,'wb')
@@ -24,7 +28,7 @@ ofile2.close()
 x = open(path+ofile,'r').readlines()
 y = open(path+ofile,'w')
 for i in x: #escape all dollar signs for currency data, add '\\' to end of lines
-    y.write(i.replace('$','\\$').replace('\n','\\\\\n'))
+    y.write(i.replace(newline,'\\\\'+newline).replace('$','\\$'))
 y.close()
     
 
