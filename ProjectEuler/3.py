@@ -1,5 +1,4 @@
 '''The prime factors of 13195 are 5, 7, 13 and 29.
-
 What is the largest prime factor of the number 600851475143 ?'''
 import math
 
@@ -25,7 +24,7 @@ def subfactor(factorlist):
     f = factorlist[:]
     for i in range(len(factorlist)): #go through list of factors and replace all composite factors with their subfactors
         subfactors = factor(factorlist[i])
-        if len(subfactors) != 0:
+        if len(subfactors) != 0 and 1 not in subfactors:
             f[i] = subfactors
     return f
 
@@ -33,21 +32,29 @@ def trfactor(factorlist,pfactors):
     '''remove all prime factors from factor list and put in a set pfactor. Convert factor list into normal list'''
     factors2 = factorlist[:]
     for i in factorlist:
-        if type(i) != list or if i in pfactors:
+        if type(i) == list: #deal with these subfactors later
+            pass
+        else: #implicitly, if type(i) is not a list, it must be a prime factor.
             pfactors.add(i)
             factors2.remove(i)
     factorlist = []
-    for i in factors2:
-        factorlist.extend(i)
+    for i in factors2: #reconstitute the list of subfactors without the hierarchical nesting.
+        factorlist.extend(i) 
     factorlist = list(set(factorlist)) #remove duplicates
     return factorlist,pfactors
 
 def pfactor(n):
     '''returns a set of all prime factors of n'''
-    p = set([1])
+    p = set()
     f = factor(n)
-    f = subfactor(f)
     while len(f) > 1:
-        (f,p) = trfactor(f,p)
         f = subfactor(f)
+        (f,p) = trfactor(f,p)
+    if len(p) == 0: #case where n is itself a prime number.
+        p = set([n])
+    elif 1 in p: #no need to list 1 as a prime factor
+        p.remove(1)
     return p
+
+ans = max(pfactor(600851475143))
+print(ans)
