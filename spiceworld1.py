@@ -36,7 +36,7 @@ class Agent:
         cols = spicefield.shape[1]
         for i in range(self.row-1,self.row+2): #neighboring rows
             for j in range(self.col-1,self.col+2): #neighboring cols
-                if i >= 0 and j >= 0 and i < rows and j < cols: #exclude out-of-range indices(edges/corners)
+                if i >= 0 and j >= 0 and i < rows and j < cols and agentfield[i,j] in [0,self.ID]: #exclude out-of-range indices(edges/corners) and cells that are currently occupied.
                     self.neighborcells.append((i,j,spicefield[i,j])) #i,j are location, 3rd element is amt of spice.
                 self.neighborcells.sort(key = itemgetter(2),reverse = True) #rank descending by spice count
 
@@ -50,7 +50,8 @@ class Agent:
 #0. [DONE]Cells grow spice by "growthrate" amount. 
 #1. [DONE]Agents harvest spice in current cell at the given rate "harvestrate", add that to their savings.
 #2. [DONE]Agents rank nearby cells to decide where they want to move.
-#3. Agents move to optimal nearby cell (or choose to stay in place).
+#3. Agents move to optimal nearby cell (or choose to stay in place). Currently the order of when each agent gets to move is randomized, \
+#   and an agent can only move into a cell that is currently unoccupied.
 #4. As each agent moves, its age increase by one, and it burns 2x metabolism from savings for movement (1x to stay in place).
 #5. Once all agents have had a chance to move, the timer is updated by +1 and the cycle starts again.
     #def bid(self,cell):
@@ -120,16 +121,23 @@ def rankneighbors(agents,spicefield):
         agents[i].rankneighbors(spicefield)
     return agents,spicefield
 
-(cells,spicefield) = growspice(cells,spicefield)
-(agents,cells,spicefield) = harvestspice(agents,cells,spicefield)
-(agents,spicefield) = rankneighbors(agents,spicefield)
+everything = (cells, agents, spicefield, agentfield)
+#This is the part the gets iterated. Probably should turn it into a function.
+def iterate(everything):
+    '''workhorse function to perform all the steps in a single iteration of the game'''
+    (cells,spicefield) = growspice(cells,spicefield)
+    (agents,cells,spicefield) = harvestspice(agents,cells,spicefield)
+    (agents,spicefield) = rankneighbors(agents,spicefield)
+    return cells, agents, spicefield, agentfield
 
-print 'spicefield\n',spicefield,'\n'
-print 'agent positions\n',agentfield
+everything = iterate(everything)
 
-import matplotlib.pyplot as plt
-plt.matshow(spicefield)
-plt.matshow(agentfield)
-plt.show()
+#print 'spicefield\n',spicefield,'\n'
+#print 'agent positions\n',agentfield
+
+#import matplotlib.pyplot as plt
+#plt.matshow(spicefield)
+#plt.matshow(agentfield)
+#plt.show()
         
     
