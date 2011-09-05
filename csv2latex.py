@@ -1,6 +1,16 @@
 #Program to convert CSV formatted tables into LaTeX format
 #By Will Townes, will.townes@gmail.com
 #July 2011
+
+'''
+If you ever have the need to convert a CSV file into LaTeX format, feel free to use the attached script. It's written in python 2.6, which you can download for free here:
+http://www.python.org/getit/releases/2.6.7/
+However, Mac computers always have Python 2.5 installed ab initio, so you might not even need to install the more recent version. The way it works is, you save a file called "data.csv" to your desktop. Then run the script using the python launcher app. The output is a text file called "LaTeXdata.txt" also saved on your desktop. If you want to execute the script from the terminal, you would do something like the following (where $ represents the command prompt):
+$cd desktop
+$python csv2latex.py
+If I make any updates I will keep the latest version of the script posted on github here:
+https://github.com/willtownes/python/blob/master/csv2latex.py
+'''
 import os, csv
 
 if os.name.lower() == 'nt':
