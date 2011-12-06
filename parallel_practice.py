@@ -1,7 +1,6 @@
 '''
-The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
-
-Find the sum of all the primes below two million.
+Sample code to demonstrate parallel processing, derived from:
+http://www.astrobetter.com/parallel-processing-in-python/
 '''
 
 def digits(m):
@@ -33,31 +32,14 @@ def listprimes(m):
     primes.remove(primes[-1]) #last item in list is greater than m, so remove it.
     return primes
 
-### simpler, but possibly slower version of listprimes 
-##        elif True in [counter%k == 0 for k in primes]: #rate limiting (SLOW) step!
-##            pass #if counter number is evenly divisible by any preceding prime, it is not prime.
-##        else:
-##            primes.append(counter)
-
-def listprimes2(m):
-    '''another attempt to list all primes below m'''
-    values = range(m+1) #note that in this list the key and the value are the same.
-    primes = values[:]
-    primes[1] = 0 #1 doesn't count as a prime
-    for i in values:
-        if primes[i] == 0:
-            pass
-        else:
-            for j in values[i+1:]:
-                if primes[j]==0 or primes[j]%i != 0:
-                    pass
-                else:
-                    primes[j] = 0
-    return primes
-
-    
-import time
-tstart = time.time()
-ans = sum(listprimes2(2000000))
-telapsed = time.time()-tstart
-
+# Just replace this (calling one function twice, in series):
+desired_values = [function(args) for args in [args1,args2]]
+ 
+# ... with this (calling one function twice, in parallel):
+import pprocess
+nproc = 4  	# maximum number of simultaneous processes desired
+results = pprocess.Map(limit=nproc, reuse=1)
+parallel_function = results.manage(pprocess.MakeReusable(function))
+parallel_function(args1)
+parallel_function(args2)
+desired_values = results[0:2]
