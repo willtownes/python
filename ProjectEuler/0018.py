@@ -1,4 +1,4 @@
-data = '''75
+data0 = '''75
 95 64
 17 47 82
 18 35 87 10
@@ -13,14 +13,17 @@ data = '''75
 91 71 52 38 17 14 91 43 58 50 27 29 48
 63 66 04 68 89 53 67 30 73 16 69 87 40 31
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23'''
-data = [i.split(' ') for i in data.split('\n')]
-data = [[int(i) for i in j] for j in data]
-total = 75
-position = 0
-for row in range(len(data)-1):
-    if data[row+1][position] > data[row+1][position+1]:
-        total += data[row+1][position]
-    else:
-        total += data[row+1][position+1]
-        position += 1
-print(total)        
+def parsedata(data0):
+    data0 = [i.split(' ') for i in data0.split('\n')]
+    data0 = [[int(i) for i in j] for j in data0]
+    return data0
+data = parsedata(data0)[:] #will gradually be stripped away by the algorithm.
+def findmaxpath(data):
+    '''find maximum sum of all paths from top to bottom of the triangular arrray.'''
+    #Aggregates the sum of lower rows into the cells above.
+    start = len(data)-2
+    for i in range(start,-1,-1):
+        for j in range(len(data[i])):
+            data[i][j]+= max(data[i+1][j],data[i+1][j+1])
+    return data[0][0]
+print("Answer is:  "+str(findmaxpath(data)))
