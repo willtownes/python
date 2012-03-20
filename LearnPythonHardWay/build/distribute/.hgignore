@@ -1,0 +1,13 @@
+syntax: glob
+*.pyc
+*~
+*.swp
+.coverage
+distribute.egg-info
+build
+dist
+lib
+bin
+include
+\.Python
+*.swp
