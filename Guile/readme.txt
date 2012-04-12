@@ -1,0 +1,1 @@
+"Guile" is a strategy game where the players attempt to take over the map.
