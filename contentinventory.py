@@ -13,19 +13,21 @@ def contentinventory(root):
 def parsenames(csvfile):
     '''reads the csv file (should be an object, not a string) and parses out the year, family, genus, species, file type, and other info'''
     reader = csv.DictReader(csvfile)        
-    writer = csv.DictWriter(open('content_inventory2.csv','wb'),reader.fieldnames+['year','family','genus','species','info','file type'])
+    writer = csv.DictWriter(open('content_inventory2.csv','wb'),reader.fieldnames+['year','family','subfamily','genus','species','info','file type'])
     writer.writeheader()
     for row in reader:
         (row['year'],row['family']) = (os.path.split(os.path.split(row['Folder'])[0])[1],os.path.split(row['Folder'])[1])
+        if len(row['family'].split('-')) > 1: (row['family'],row['subfamily']) = row['family'].split('-') #extract subfamily, where present
         (name,row['file type']) = os.path.splitext(row['filename'])
         name = name.split(' ')
         row['genus'] = name[0]
         if len(name) < 3:
+            print('anomaly!') #I don't think this condition actually exists...
             row['species'] = row['info'] = ''
         else:
             row['species'] = name[1]
             row['info'] = ' '.join(name[2:])
-            writer.writerow(row)
+        writer.writerow(row)
 
 if __name__=="__main__":
     root = '/Users/townesf/Pictures/iphoto_flora_malesia/Originals'
