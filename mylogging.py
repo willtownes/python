@@ -1,4 +1,4 @@
-import logging,types
+import logging
 def makelogger(filename='log.txt'):
     '''returns a logger object that will write to specified file.
     Remember to call logging.shutdown() or log.removeHandler() to
@@ -21,5 +21,6 @@ if __name__ == "__main__":
         raise Exception
     except Exception as e:
         log.exception(e)
+        raise e
     finally:
         logging.shutdown()
