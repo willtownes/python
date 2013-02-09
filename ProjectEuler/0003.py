@@ -7,7 +7,7 @@ def factor(n):
     Note that if len(factor(n)) = 0, then n is prime.'''
     n = float(n)
     factors = [] #composite factors
-    for i in range(2,int(math.ceil(n**.5)+1)):
+    for i in xrange(2,int(math.ceil(n**.5)+1)):
         j = n/i
         if j%1 != 0: #in this case, neither i nor j are factors
             pass
@@ -56,5 +56,6 @@ def pfactor(n):
         p.remove(1)
     return p
 
-ans = max(pfactor(600851475143))
-print(ans)
+if __name__=="__main__":
+    ans = max(pfactor(600851475143))
+    print(ans)
