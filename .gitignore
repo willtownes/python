@@ -1,3 +1,5 @@
 *.pyc
 *.xlsx
 *.xls
+*.json
+*.csv
