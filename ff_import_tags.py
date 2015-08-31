@@ -39,7 +39,7 @@ c = db.cursor()
 f = codecs.open(EXPORT_HTML, encoding='utf-8')
 
 # Get parent_id of FOLDER
-parent_id = c.execute("""SELECT id FROM moz_bookmarks WHERE type = 2 AND parent = 2 AND title = ?""", (FOLDER,)).fetchone()[0]
+parent_id = c.execute("""SELECT id FROM moz_bookmarks WHERE type = 2 AND parent = 1 AND title = ?""", (FOLDER,)).fetchone()[0]
 
 # get all bookmarks from FOLDER (no tags yet)
 bookmarks = c.execute("""SELECT fk FROM moz_bookmarks WHERE type = 1 AND parent = ?""", (parent_id,)).fetchall()
