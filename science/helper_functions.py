@@ -19,24 +19,27 @@ def dist(a,b):
     """calculate euclidean distance between two points a and b"""
     return np.linalg.norm(a-b)
 
-def distmat(x,row=True,squared=False):
-    """Returns the matrix of all pairwise distances between the rows of x.
-    If row=False, returns matrix of pairwise distances between column vectors."""
-    if row==False: xxt = np.inner(x,x)
-    elif row==True: xxt = np.outer(x,x)
-    else: raise TypeError("row must be True/False")
-    n = xxt.shape[0]
-    dmat = np.zeros((n,n))
+def distmat(A,B,row=True,squared=False):
+    """Returns the matrix of all pairwise distances between the rows of A and rows of B.
+    If row=False, returns matrix of pairwise distances between column vectors.
+    Does not accept vectors! Convert to arrays or matrices first!"""
+    #to-do: can speed up special case of distmat(A,A) by taking advantage of symmetry
+    if row==False:
+        A = A.T
+        B = B.T
+    assert(A.shape[1]==B.shape[1])
+    AAt = A.dot(A.T)
+    BBt = B.dot(B.T)
+    ABt = A.dot(B.T)
+    n,m = ABt.shape
+    dmat = np.zeros((n,m))
     for i in xrange(n):
-        xxt_ii = xxt[i][i]
-        for j in xrange(i+1,n):
-            d = xxt_ii + xxt[j][j] - 2*xxt[i][j]
-            dmat[i][j] = d
-            dmat[j][i] = d
+        for j in xrange(m):
+            dmat[i][j] = AAt[i,i] + BBt[j,j] - 2*ABt[i,j]
     if squared: return dmat
     else: return np.sqrt(dmat)
 
-def phi_basis(sq_distance_matrix,rho):
+def phi_basis(sq_distance_matrix,rho=1):
     """Given a matrix of squared pairwise distances,
     computes the radial basis functions of each point,
     with the scale/bandwidth parameter rho. phi(t) = exp(-t/rho)"""
@@ -49,8 +52,8 @@ def matrix_sqt(mat):
     return vects.dot(np.diag(np.sqrt(vals)))
 
 if __name__=="__main__":
-    x= np.array([-1.87,-1.76,-1.67,-1.22,-0.07,0.11,0.67,1.60,2.22,2.51])
-    Phi = phi_basis(distmat(x,squared=True),rho=1)
-    Phi_sqt = matrix_sqt(Phi)
-    print(np.max(np.abs(Phi-Phi_sqt.dot(Phi_sqt.T))))
+    #x= np.array([-1.87,-1.76,-1.67,-1.22,-0.07,0.11,0.67,1.60,2.22,2.51])
+    #Phi = phi_basis(distmat(x,squared=True),rho=1)
+    #Phi_sqt = matrix_sqt(Phi)
+    #print(np.max(np.abs(Phi-Phi_sqt.dot(Phi_sqt.T))))
     #plt.plot(x,Phi);
