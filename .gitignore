@@ -3,3 +3,4 @@
 *.xls
 *.json
 *.csv
+.ipynb_checkpoints
